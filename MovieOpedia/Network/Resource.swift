@@ -9,5 +9,5 @@
 import Foundation
 struct Resource<A> where A:Codable {
     let url: URL
-    let parse:(Data) -> A = { data in return try! JSONDecoder().decode(A.self, from: data)}
+    let parseIt:(Data) -> A = { data in return try! JSONDecoder().decode(A.self, from: data)}
 }

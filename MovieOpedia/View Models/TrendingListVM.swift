@@ -7,61 +7,67 @@
 //
 
 import Foundation
+import RxSwift
 
 class TrendingListVM {
     
-    var batchSize : Int?
-    var trendingList = [Items]()
-    var trendingListFetchFinished : ((_ list:[Items],_ indexPaths:[IndexPath]?)->())?
-    var currentFetchedTrendingList: TrendingList?
     var isFetchInProgress = false
     var currentPage = 1
     var totalPages = 0
     
-    func getTrendingList(url: String,_ completion:@escaping (TrendingList?) -> ()){
-        guard !isFetchInProgress else{
-            return
-        }
-        isFetchInProgress = true
-        if let url = URL(string: "\(url)\(self.currentPage)"){
-            print(url)
-            let movieRes = Resource<TrendingList>(url:url)
-            NetworkQueries().getList(movieRes) { (movies) in
-                if let res = movies{
-                    self.currentPage += 1
-                    self.totalPages = res.total_results
-                    self.trendingList.append(contentsOf: res.results)
-                    
-                    if res.page > 1{
-                        let indexPathsToBeReloaded = self.calculateIndexpathsToBeReloaded(res.results)
-                        self.trendingListFetchFinished?(res.results,indexPathsToBeReloaded)
-                    }else{
-                        self.trendingListFetchFinished?(res.results,.none)
-                    }
-                }
-                self.isFetchInProgress = false
-            }
-        }
-    }
-    
-    private func calculateIndexpathsToBeReloaded(_ newList:[Items])->[IndexPath]{
-        let startIndex = trendingList.count - newList.count
-        let endIndex = startIndex + newList.count
-        return (startIndex..<endIndex).map{IndexPath(row: $0, section: 0)}
-    }
+    let events = Variable<[Items]>([])
+    let bag = DisposeBag()
     
     func getTrendingMovies(){
         let url = "https://api.themoviedb.org/3/trending/all/day?api_key=02774a8dc709916083e34ab3c8ee9bd4&page="
-        self.getTrendingList(url: url){ (list) in
-            //print(list)
-        }
+
+        getMoviesFrom(url: url)
     }
     
     func getTrendingHindiMovies(){
         let url = "https://api.themoviedb.org/3/discover/movie?api_key=02774a8dc709916083e34ab3c8ee9bd4&region=IN&language=hi-IN&with_original_language=hi&page="
-        self.getTrendingList(url: url){ (list) in
-            //print(list)
+        
+        getMoviesFrom(url: url)
+    }
+    
+    fileprivate func getMoviesFrom(url: String){
+        guard !isFetchInProgress else{
+            return
         }
+        isFetchInProgress = true
+        let response = Observable.from([url])
+            .map { (urlString) -> URL in
+                return URL(string: "\(url)\(self.currentPage)")!
+            }
+            .map { url -> URLRequest in
+                return URLRequest(url: url)
+            }
+            .flatMap { request -> Observable<(response:HTTPURLResponse, data:Data)> in
+                return URLSession.shared.rx.response(request: request)
+            }
+
+        response
+            .filter { (response, data)  in
+                return 200..<300 ~= response.statusCode
+            }.map { data -> TrendingList in
+                //let fData = data.data.fla
+                return try! JSONDecoder().decode(TrendingList.self, from: data.data)
+            }.map{ trends -> [Items] in
+                self.totalPages = trends.total_pages
+                return trends.results.filter{!($0.title.isEmpty)}
+                
+            }
+            .subscribe(onNext: { (items) in
+                self.currentPage += 1
+                
+                self.assignItems(tends: items)
+            })
+            .disposed(by: bag)
+    }
+    
+    fileprivate func assignItems(tends: [Items]){
+        events.value.append(contentsOf: tends)
+        isFetchInProgress = false
     }
 }
 

@@ -25,7 +25,7 @@ struct NetworkQueries {
             }
             
             if let resp = response as? HTTPURLResponse, resp.statusCode == 200{
-                completion(data.flatMap(resource.parse))
+                completion(data.flatMap(resource.parseIt))
             }
         }.resume()
     }

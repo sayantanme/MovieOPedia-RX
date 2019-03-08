@@ -29,7 +29,7 @@ class TrendingViewDS: NSObject,UITableViewDataSource,UITableViewDataSourcePrefet
             cell.setup(trendingItem: .none)
         }else{
             cell.setup(trendingItem:
-                trendingListVM?.trendingList[indexPath.row])
+                trendingListVM?.events.value[indexPath.row])
         }
         return cell
     }
@@ -51,6 +51,6 @@ class TrendingViewDS: NSObject,UITableViewDataSource,UITableViewDataSourcePrefet
     }
     
     func isLoadingCell(for indexPath: IndexPath) -> Bool {
-        return indexPath.row >= trendingListVM!.trendingList.count
+        return indexPath.row >= trendingListVM!.events.value.count
     }
 }

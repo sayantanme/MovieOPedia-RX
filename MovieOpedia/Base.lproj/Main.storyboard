@@ -125,7 +125,7 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="HId-Dn-Kgk"/>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="mQo-fR-O1K"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="T3f-BB-0Hr"/>
                                     <outlet property="prefetchDataSource" destination="BYZ-38-t0r" id="IhW-Q3-KtE"/>
                                 </connections>
@@ -140,7 +140,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Trending Movies" id="vvl-U6-NTg"/>
+                    <navigationItem key="navigationItem" title="Trending Movies" id="vvl-U6-NTg">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="filter" id="zQX-YN-t8M">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="filterTapped:" destination="BYZ-38-t0r" id="PPN-OB-ieH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="tblTrendingList" destination="ihq-O0-EwJ" id="eEM-Pd-QtV"/>
@@ -295,6 +302,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="accView" destination="0Wu-Mg-CBG" id="4n1-Ac-bXw"/>
                                             <outlet property="containView" destination="Ih3-x3-eH2" id="nKh-xY-ybk"/>
                                             <outlet property="movieAvgVotes" destination="3BY-de-Npw" id="tZU-5R-SIB"/>
                                             <outlet property="moviePoster" destination="4gg-5Q-IWW" id="WNp-1m-uU1"/>
@@ -328,7 +336,62 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgz-Ym-8K6" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4136.25" y="203.87323943661971"/>
+            <point key="canvasLocation" x="3139" y="176"/>
+        </scene>
+        <!--FilterVC-->
+        <scene sceneID="PX5-Ek-GsI">
+            <objects>
+                <viewController storyboardIdentifier="FilterVC" id="hIa-gR-6to" customClass="FilterVC" customModule="MovieOpedia" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="h2q-eD-jcI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8dL-Gm-2NX">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Filter" id="kPi-Fc-W36">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="efL-kf-OL5">
+                                            <color key="tintColor" red="1" green="0.1134047634" blue="0.083596713000000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <connections>
+                                                <action selector="cancelFilter:" destination="hIa-gR-6to" id="9ob-Dx-iwe"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Qw1-NN-0G4">
+                                            <connections>
+                                                <action selector="filterApply:" destination="hIa-gR-6to" id="Kmx-U3-Tra"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="TcC-Cp-DHg"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Dd-rE-ZzM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3123" y="955"/>
         </scene>
         <!--Hindi-->
         <scene sceneID="jDs-Ob-TdN">
@@ -347,10 +410,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VW2-3z-7JZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3138.75" y="203.87323943661971"/>
+            <point key="canvasLocation" x="2117" y="176"/>
         </scene>
     </scenes>
     <resources>
+        <image name="filter" width="36" height="36"/>
         <image name="movie" width="48" height="48"/>
         <image name="vote_icon" width="96" height="96"/>
     </resources>

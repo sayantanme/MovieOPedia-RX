@@ -65,13 +65,21 @@ struct Items:Codable{
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        posterPath = try "https://image.tmdb.org/t/p/w1280" + values.decode(String.self, forKey: .posterPath)
+        do{
+            posterPath = try "https://image.tmdb.org/t/p/w1280" + values.decode(String.self, forKey: .posterPath)
+        }catch{
+            posterPath = ""
+        }
         do{
             isAdult = try values.decode(Bool.self, forKey: .isAdult)
         }catch{
             isAdult = false
         }
-        overview = try values.decode(String.self, forKey: .overview)
+        do{
+            overview = try values.decode(String.self, forKey: .overview)
+        }catch{
+            overview = ""
+        }
         do{
             releaseDate = try values.decode(String.self, forKey: .releaseDate)
         }catch{
@@ -84,7 +92,11 @@ struct Items:Codable{
         }catch{
             original_title = ""
         }
-        original_language = try values.decode(String.self, forKey: .original_language)
+        do{
+            original_language = try values.decode(String.self, forKey: .original_language)
+        }catch{
+            original_language = ""
+        }
         do{
             title = try values.decode(String.self, forKey: .title)
         }catch{
@@ -95,13 +107,26 @@ struct Items:Codable{
         }else{
             backdrop_path = nil
         }
-        popularity = try values.decode(Double.self, forKey: .popularity)
-        vote_count = try values.decode(Int.self, forKey: .vote_count)
+        do{
+            popularity = try values.decode(Double.self, forKey: .popularity)
+        }catch{
+            popularity = 0.0
+        }
+        
+        do{
+            vote_count = try values.decode(Int.self, forKey: .vote_count)
+        }catch{
+            vote_count = 0
+        }
         do{
             video = try values.decode(Bool.self, forKey: .video)
         }catch{
             video = false
         }
-        vote_average = try values.decode(Double.self, forKey: .vote_average)
+        do{
+            vote_average = try values.decode(Double.self, forKey: .vote_average)
+        }catch{
+            vote_average = 0.0
+        }
     }
 }
