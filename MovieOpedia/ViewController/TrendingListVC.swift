@@ -26,7 +26,7 @@ class TrendingListVC: UIViewController,UITableViewDelegate, UIViewControllerTran
         trendingListVM.getTrendingMovies()
         
         
-        trendingListVM.events.asObservable().subscribe(onNext: { (movies) in
+        trendingListVM.movieItems.asObservable().subscribe(onNext: { (movies) in
             DispatchQueue.main.async {
                 self.tblTrendingList.reloadData()
             }

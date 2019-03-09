@@ -29,7 +29,7 @@ class TrendingViewDS: NSObject,UITableViewDataSource,UITableViewDataSourcePrefet
             cell.setup(trendingItem: .none)
         }else{
             cell.setup(trendingItem:
-                trendingListVM?.events.value[indexPath.row])
+                trendingListVM?.movieItems.value[indexPath.row])
         }
         return cell
     }
@@ -44,13 +44,10 @@ class TrendingViewDS: NSObject,UITableViewDataSource,UITableViewDataSourcePrefet
             }else if vc is HindiMoviesVC{
                 trendingListVM?.getTrendingHindiMovies()
             }
-//            trendingListVM?.getTrendingList({ (list) in
-//
-//            })
         }
     }
     
     func isLoadingCell(for indexPath: IndexPath) -> Bool {
-        return indexPath.row >= trendingListVM!.events.value.count
+        return indexPath.row >= trendingListVM!.movieItems.value.count
     }
 }

@@ -8,15 +8,15 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 class TrendingListVM {
     
-    var isFetchInProgress = false
     var currentPage = 1
     var totalPages = 0
     
-    let events = Variable<[Items]>([])
     let bag = DisposeBag()
+    let movieItems = BehaviorRelay<[Items]>(value: [])
     
     func getTrendingMovies(){
         let url = "https://api.themoviedb.org/3/trending/all/day?api_key=02774a8dc709916083e34ab3c8ee9bd4&page="
@@ -31,14 +31,12 @@ class TrendingListVM {
     }
     
     fileprivate func getMoviesFrom(url: String){
-        guard !isFetchInProgress else{
-            return
-        }
-        isFetchInProgress = true
+
         let response = Observable.from([url])
             .map { (urlString) -> URL in
                 return URL(string: "\(url)\(self.currentPage)")!
             }
+            .distinctUntilChanged()
             .map { url -> URLRequest in
                 return URLRequest(url: url)
             }
@@ -66,13 +64,6 @@ class TrendingListVM {
     }
     
     fileprivate func assignItems(tends: [Items]){
-        events.value.append(contentsOf: tends)
-        isFetchInProgress = false
+        movieItems.accept(movieItems.value + tends)
     }
 }
-
-
-//https://api.themoviedb.org/3/discover/movie?api_key=02774a8dc709916083e34ab3c8ee9bd4&region=IN&language=hi-IN&with_original_language=hi
-
-
-//&release_date.gte=2017-08-01&with_release_type=3|2

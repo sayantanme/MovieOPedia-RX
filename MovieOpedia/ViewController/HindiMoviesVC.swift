@@ -25,7 +25,7 @@ class HindiMoviesVC: UIViewController {
         //trendingListVM.trendingListFetchFinished = trendingFetchDone
         trendingListVM.getTrendingHindiMovies()
         
-        trendingListVM.events.asObservable().subscribe(onNext: { (movies) in
+        trendingListVM.movieItems.asObservable().subscribe(onNext: { (movies) in
             DispatchQueue.main.async {
                 self.tblHindiMovies.reloadData()
             }
